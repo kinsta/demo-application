@@ -72,7 +72,7 @@ const Home: NextPage = () => {
 
       <main className="h-screen flex items-center justify-center bg-slate-50">
         <div className="grid gap-y-4 bg-white rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl min-w-[400px]">
-          <h1 className="font-bold">Checklist</h1>
+          <h1 className="font-bold mb-4">Checklist</h1>
           <div className="flex items-center">
             <Input
               isDisabled={items.length >= 8}
@@ -94,11 +94,11 @@ const Home: NextPage = () => {
       </main>
 
       <footer className="fixed bottom-8 left-1/2 -translate-x-1/2">
-        Proudly hosted by{" "}
+        Proudly hosted by {" "}
         <a
           href="https://kinsta.com"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noreferrer noopener nofollow"
           style={{ color: "#5333ed" }}
           className="hover:underline underline-offset-1"
         >

@@ -14,14 +14,14 @@ const Item: FC<Props> = ({ id, content, isDone, onToggle, onDelete }) => {
     <li key={id} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
       <input
         type="checkbox"
-        id="id"
+        id={id}
         checked={isDone}
         onChange={() => {}}
         onClick={onToggle}
       />
       <label
         className={`form-check-label inline-block text-gray-800 grow ${isDone ? 'line-through' : ''}`}
-        htmlFor="id"
+        htmlFor={id}
       >
         {content}
       </label>
