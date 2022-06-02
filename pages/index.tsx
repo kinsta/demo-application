@@ -2,28 +2,45 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import type { KeyboardEventHandler } from "react";
-import { Item } from "../types";
+import type { Item } from "../types";
 import List from "../components/List";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { prisma } from "../shared/db";
+import { useItemApiRoutes } from "../shared/useItemApiRoutes";
 
-const Home: NextPage = () => {
-  const [items, setItems] = useState<Item[]>([]);
+const kinstaColor = "#5333ed";
+
+type Props = {
+  initialItems: Item[];
+};
+
+export async function getServerSideProps() {
+  const initialItems = await prisma.todoItem.findMany();
+
+  return {
+    props: {
+      initialItems,
+    },
+  };
+}
+
+const Home: NextPage<Props> = ({ initialItems }) => {
+  const [items, setItems] = useState<Item[]>(initialItems);
   const [textValue, setTextValue] = useState("");
+  const { addTodoItem, toggleTodoItem, deleteTodoItem } = useItemApiRoutes();
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!textValue || items.length >= 8) {
       return;
     }
 
-    setItems((state) => [
-      ...state,
-      {
-        id: `${textValue[0]}-${state.length - 1}`,
-        content: textValue,
-        isDone: false,
-      },
-    ]);
+    const newItem = await addTodoItem({
+      content: textValue,
+      isDone: false,
+    });
+
+    setItems(items.concat(newItem));
     setTextValue("");
   };
 
@@ -33,7 +50,7 @@ const Home: NextPage = () => {
     }
   };
 
-  const handleListChange = ({
+  const handleListChange = async ({
     id,
     action,
   }: {
@@ -47,17 +64,16 @@ const Home: NextPage = () => {
     }
 
     if (action === "change") {
+      const newItem = {
+        ...selectedItem,
+        isDone: !selectedItem.isDone,
+      };
+      await toggleTodoItem(newItem);
       setItems(
-        items.map((item) =>
-          item.id === selectedItem.id
-            ? {
-                ...selectedItem,
-                isDone: !selectedItem.isDone,
-              }
-            : item
-        )
+        items.map((item) => (item.id === selectedItem.id ? newItem : item))
       );
     } else if (action === "delete") {
+      await deleteTodoItem(selectedItem.id);
       setItems(items.filter((item) => item.id !== selectedItem.id));
     }
   };
@@ -99,7 +115,7 @@ const Home: NextPage = () => {
           href="https://kinsta.com"
           target="_blank"
           rel="noreferrer noopener"
-          style={{ color: "#5333ed" }}
+          style={{ color: kinstaColor }}
           className="hover:underline underline-offset-1"
         >
           Kinsta
