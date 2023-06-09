@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "db-up": "docker-compose up -d",
+    "db-down": "docker-compose down",
+    "db-migrate": "npx -y prisma migrate dev",
     "dev": "next dev",
     "build": "next build",
     "start": "npx prisma migrate deploy && next start",
