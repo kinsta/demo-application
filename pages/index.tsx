@@ -65,7 +65,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>TODO application | Kinsta</title>
+        <title>TODO application</title>
         <meta name="description" content="Dead simple TODO application." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -92,19 +92,6 @@ const Home: NextPage = () => {
           <List value={items} onChange={handleListChange} />
         </div>
       </main>
-
-      <footer className="fixed bottom-8 left-1/2 -translate-x-1/2">
-        Proudly hosted by {" "}
-        <a
-          href="https://kinsta.com"
-          target="_blank"
-          rel="noreferrer noopener nofollow"
-          style={{ color: "#5333ed" }}
-          className="hover:underline underline-offset-1"
-        >
-          Kinsta
-        </a>
-      </footer>
     </div>
   );
 };
